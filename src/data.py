@@ -48,15 +48,19 @@ def build(raw_dir=ROOT / "data/raw", out=ROOT / "data/processed/gtzan4.npz", see
                         split_clip=split_clip, song_names=np.array(names))
     print("clips:", X.shape, "songs:", len(names))
 
-def load_split(split="song", path=ROOT / "data/processed/gtzan4.npz"):
-    """Returns dict with train/dev/test -> (X, y, song_id). X standardized with TRAIN stats only."""
+def load_split(split="song", path=ROOT / "data/processed/gtzan4.npz", rms_norm=False):
+    """Returns dict with train/dev/test -> (X, y, song_id). X standardized with TRAIN stats only.
+    rms_norm=True first scales every clip to unit std, removing amplitude/loudness as a cue."""
     d = np.load(path)
+    X = d["X"]
+    if rms_norm:
+        X = X / (X.std(axis=1, keepdims=True) + 1e-8)
     s = d["split_song"] if split == "song" else d["split_clip"]
-    mu = d["X"][s == 0].mean(axis=0); sd = d["X"][s == 0].std(axis=0) + 1e-8
+    mu = X[s == 0].mean(axis=0); sd = X[s == 0].std(axis=0) + 1e-8
     out = {}
     for k, name in enumerate(["train", "dev", "test"]):
         m = s == k
-        out[name] = ((d["X"][m] - mu) / sd, d["y"][m], d["song_id"][m])
+        out[name] = ((X[m] - mu) / sd, d["y"][m], d["song_id"][m])
     return out
 
 if __name__ == "__main__":
