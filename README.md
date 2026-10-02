@@ -13,8 +13,8 @@ Our main changes to the original setup:
 
 | Member | Responsibility |
 |---|---|
-| Member 1 (add name) | Data pipeline, song-level split, two-layer NN baseline, evaluation module, loudness analysis |
-| Member 2 (add name) | Autoencoder and Deep Softmax Autoencoder, extension *(TODO)* |
+| Abhay Natesh Bharadwaj | Data pipeline, song-level split, two-layer NN baseline, evaluation module, loudness analysis |
+| Ananya S | Autoencoder and Deep Softmax Autoencoder, extension *(TODO)* |
 | Both | Write-up, slides, demo *(TODO)* |
 
 ## Repository structure
