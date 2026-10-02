@@ -1,0 +1,5 @@
+,train,train,dev,dev,test,test,test_song_vote,test_song_vote
+,mean,std,mean,std,mean,std,mean,std
+split,,,,,,,,
+clip,0.559,0.004,0.419,0.003,0.413,0.001,,
+song,0.55,0.021,0.417,0.001,0.396,0.002,0.456,0.01
