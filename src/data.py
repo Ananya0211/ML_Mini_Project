@@ -13,10 +13,18 @@ def load_song(path):
     clips = y[: n * CLIP_LEN].reshape(n, CLIP_LEN)[:, :500 * POOL]
     return clips.reshape(n, 500, POOL).mean(axis=2)           # (n_clips, 500)
 
-def build(raw_dir=ROOT / "data/raw", out=ROOT / "data/processed/gtzan4.npz", seed=42):
+def build(raw_dir=None, out=ROOT / "data/processed/gtzan4.npz", seed=42):
     X, y, sid, names, song_labels = [], [], [], [], []
     for label, g in enumerate(GENRES):
-        for p in sorted(Path(raw_dir, g).glob("*.wav")):
+        if raw_dir is not None:
+            files = sorted(Path(raw_dir, g).glob("*.wav"))
+        else:
+            # Check both data/raw/<genre>/*.wav and data/<genre>/*.wav
+            files = sorted((ROOT / "data/raw" / g).glob("*.wav"))
+            if not files:
+                files = sorted((ROOT / "data" / g).glob("*.wav"))
+
+        for p in files:
             try:
                 f = load_song(p)
             except Exception as e:
@@ -25,7 +33,7 @@ def build(raw_dir=ROOT / "data/raw", out=ROOT / "data/processed/gtzan4.npz", see
             X.append(f); y += [label] * len(f); sid += [s] * len(f)
 
     if not X:
-        raise FileNotFoundError(f"No audio files found under {raw_dir}. Check data/raw/<genre>/*.wav")
+        raise FileNotFoundError(f"No audio files found. Check data/raw/<genre>/*.wav or data/<genre>/*.wav")
 
     X, y, sid = np.concatenate(X).astype(np.float32), np.array(y), np.array(sid)
     song_labels = np.array(song_labels)
