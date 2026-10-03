@@ -40,7 +40,7 @@ ML_Mini_Project/
     ├── README.md          # results index & visual figure catalog
     ├── figures/           # confusion matrices, PCA plots, sensitivity curves
     ├── metrics/           # CSV result tables
-    └── models/            # saved weights (not committed)
+    └── models/            # saved PyTorch model checkpoints (.pt)
 ```
 
 ## Setup
