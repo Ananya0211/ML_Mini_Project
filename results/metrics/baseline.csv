@@ -1,5 +1,7 @@
-,train,train,dev,dev,test,test,test_song_vote,test_song_vote
-,mean,std,mean,std,mean,std,mean,std
-split,,,,,,,,
-clip,0.559,0.004,0.419,0.003,0.413,0.001,,
-song,0.55,0.021,0.417,0.001,0.396,0.002,0.456,0.01
+,,train,train,dev,dev,test,test,test_song_vote,test_song_vote
+,,mean,std,mean,std,mean,std,mean,std
+rms_norm,split,,,,,,,,
+False,clip,0.573,0.017,0.421,0.002,0.409,0.002,,
+False,song,0.55,0.023,0.417,0.006,0.385,0.009,0.439,0.035
+True,clip,0.442,0.011,0.32,0.005,0.302,0.004,,
+True,song,0.483,0.016,0.313,0.005,0.298,0.003,0.417,0.017

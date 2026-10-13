@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from data import load_split, ROOT
 from autoencoder import DeepSoftmaxAutoencoder, train_deep_softmax_ae, EvaluateAdapter
-from evaluate import predict, song_vote
+from evaluate import predict, song_vote, set_seed
 
 # Ensure output subdirectories exist
 (ROOT / "results" / "metrics").mkdir(parents=True, exist_ok=True)
@@ -25,6 +25,7 @@ rows = []
 for gamma in gamma_values:
     print(f"\n--- Testing gamma = {gamma:.2f} ---")
     for seed in seeds:
+        set_seed(seed)
         raw_model = DeepSoftmaxAutoencoder()
         # For gamma=1.0 (pure reconstruction), train_deep_softmax_ae handles MSE only
         trained_model, hist = train_deep_softmax_ae(raw_model, data, gamma=gamma, seed=seed)

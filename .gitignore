@@ -1,5 +1,14 @@
 data/
 .venv/
+venv/
+env/
 __pycache__/
+*.py[cod]
+*$py.class
 *.pt
 *.npz
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

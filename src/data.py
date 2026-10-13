@@ -1,4 +1,4 @@
-import numpy as np, librosa
+import numpy as np
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 
@@ -8,6 +8,7 @@ GENRES = ["classical", "jazz", "metal", "pop"]
 SR, CLIP_LEN, POOL = 22050, 22050, 44      # 500 * 44 = 22,000 samples kept per clip
 
 def load_song(path):
+    import librosa
     y, _ = librosa.load(path, sr=SR, mono=True)
     n = len(y) // CLIP_LEN
     clips = y[: n * CLIP_LEN].reshape(n, CLIP_LEN)[:, :500 * POOL]

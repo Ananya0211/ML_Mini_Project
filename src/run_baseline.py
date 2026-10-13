@@ -1,7 +1,7 @@
 import numpy as np, pandas as pd, torch
 from data import load_split, ROOT
 from baseline import TwoLayerNN, train_classifier
-from evaluate import predict, clip_report, song_vote, plot_pca
+from evaluate import predict, clip_report, song_vote, plot_pca, set_seed
 
 for sub in ("figures", "metrics", "models"):
     (ROOT / "results" / sub).mkdir(parents=True, exist_ok=True)
@@ -12,6 +12,7 @@ for rms_norm in [False, True]:
         tag = f"{split}_norm{int(rms_norm)}"
         data = load_split(split, rms_norm=rms_norm)
         for seed in [0, 1, 2]:
+            set_seed(seed)
             model, hist = train_classifier(TwoLayerNN(), data, seed=seed)
             row = {"rms_norm": rms_norm, "split": split, "seed": seed, "epochs_run": len(hist)}
             for name in ["train", "dev", "test"]:

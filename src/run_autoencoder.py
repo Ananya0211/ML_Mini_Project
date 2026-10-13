@@ -3,7 +3,7 @@ import pandas as pd
 import torch
 from data import load_split, ROOT
 from autoencoder import DeepSoftmaxAutoencoder, train_deep_softmax_ae, EvaluateAdapter
-from evaluate import predict, clip_report, song_vote, plot_pca
+from evaluate import predict, clip_report, song_vote, plot_pca, set_seed
 
 # Ensure results subdirectories exist
 for sub in ("figures", "metrics", "models"):
@@ -17,6 +17,7 @@ for rms_norm in [False, True]:
         data = load_split(split, rms_norm=rms_norm)
 
         for seed in [0, 1, 2]:
+            set_seed(seed)
             raw_model = DeepSoftmaxAutoencoder()
             trained_model, hist = train_deep_softmax_ae(raw_model, data, gamma=0.9, seed=seed)
             model = EvaluateAdapter(trained_model)

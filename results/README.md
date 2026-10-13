@@ -22,11 +22,11 @@ Evaluation metrics computed across 3 random seeds (seeds 0, 1, 2).
 | Model | Split Strategy | Input Preprocessing | Test Clip Accuracy | **Test Song Voting Accuracy** |
 |---|---|---|---|---|
 | **Loudness-Only (Logistic Reg)** | Song-level | Raw Audio | 63.1% | n/a |
-| **Two-Layer NN (Baseline)** | Song-level | Raw Audio | 39.6% ± 0.2% | **45.6% ± 1.0%** |
-| **Two-Layer NN (Baseline)** | Clip-level | Raw Audio | 41.3% ± 0.1% | n/a |
-| **Deep Softmax AE (Member 2)** | **Song-level** | **Raw Audio** | **52.0% ± 9.6%** | **62.2% ± 12.1% (Peak: 70.0%)** |
-| **Deep Softmax AE (Member 2)** | **Clip-level** | **Raw Audio** | **56.3% ± 1.0%** | n/a |
-| **Deep Softmax AE (Normalised)** | Song-level | `rms_norm=True` | 32.4% ± 2.4% | **34.4% ± 2.5%** |
+| **Two-Layer NN (Baseline)** | Song-level | Raw Audio | 38.5% ± 0.9% | **43.9% ± 3.5%** |
+| **Two-Layer NN (Baseline)** | Clip-level | Raw Audio | 40.9% ± 0.2% | n/a |
+| **Deep Softmax AE (Member 2)** | **Song-level** | **Raw Audio** | **56.4% ± 2.8%** | **66.7% ± 1.7%** |
+| **Deep Softmax AE (Member 2)** | **Clip-level** | **Raw Audio** | **56.4% ± 1.5%** | n/a |
+| **Deep Softmax AE (Normalised)** | Song-level | `rms_norm=True` | 34.8% ± 1.3% | **42.2% ± 4.8%** |
 | **Deep Softmax AE ($\gamma=0.50$ Extension)** | Song-level | Raw Audio | 55.6% ± 1.4% | **71.7% ± 2.9%** |
 
 ---

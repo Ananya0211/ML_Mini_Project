@@ -137,12 +137,12 @@ Mean ± std over 3 seeds.
 
 | Model | Split | Train | Dev | Test | Test (song vote) |
 |---|---|---|---|---|---|
-| Two-layer NN | Song-level | 0.550 ± 0.021 | 0.417 ± 0.001 | 0.396 ± 0.002 | 0.456 ± 0.010 |
-| Two-layer NN | Clip-level | 0.559 ± 0.004 | 0.419 ± 0.003 | 0.413 ± 0.001 | n/a |
+| Two-layer NN | Song-level | 0.550 ± 0.023 | 0.417 ± 0.006 | 0.385 ± 0.009 | 0.439 ± 0.035 |
+| Two-layer NN | Clip-level | 0.573 ± 0.017 | 0.421 ± 0.002 | 0.409 ± 0.002 | n/a |
 | Loudness-only (logistic regression) | Song-level | 0.594 | 0.648 | 0.631 | n/a |
 | Loudness-only | Clip-level | 0.608 | 0.602 | 0.612 | n/a |
-| **Deep Softmax Autoencoder** | **Song-level** | **0.855 ± 0.115** | **0.543 ± 0.053** | **0.520 ± 0.096** | **0.622 ± 0.121** |
-| **Deep Softmax Autoencoder** | **Clip-level** | **0.910 ± 0.010** | **0.574 ± 0.009** | **0.563 ± 0.010** | n/a |
+| **Deep Softmax Autoencoder** | **Song-level** | **0.901 ± 0.024** | **0.576 ± 0.035** | **0.564 ± 0.028** | **0.667 ± 0.017** |
+| **Deep Softmax Autoencoder** | **Clip-level** | **0.926 ± 0.004** | **0.563 ± 0.034** | **0.564 ± 0.015** | n/a |
 
 For reference, the paper reports 52.0% / 38.1% / 36.4% (train / dev / test) for its two-layer baseline, and 94.9% / 64.1% / 65.3% for its final model, using a clip-level split. Our dataset differs (11,968 clips versus their 8,000), so these are context, not an exact comparison. Chance is 25%.
 
@@ -152,7 +152,8 @@ For reference, the paper reports 52.0% / 38.1% / 36.4% (train / dev / test) for 
 
 | Model | Split | Train | Dev | Test | Test (song vote) |
 |---|---|---|---|---|---|
-| Deep Softmax Autoencoder | Song-level | 0.817 ± 0.306 | 0.326 ± 0.022 | 0.324 ± 0.024 | 0.344 ± 0.025 |
+| Deep Softmax Autoencoder | Song-level | 0.987 ± 0.008 | 0.327 ± 0.017 | 0.348 ± 0.013 | 0.422 ± 0.048 |
+| Deep Softmax Autoencoder | Clip-level | 0.980 ± 0.024 | 0.356 ± 0.008 | 0.341 ± 0.008 | n/a |
 ### Extension: Loss Weight ($\gamma$) Sensitivity Analysis (Member 2)
 
 We evaluated the effect of varying the reconstruction loss weight $\gamma \in [0.0, 1.0]$ in the joint loss $\mathcal{L} = \gamma \cdot \text{MSE} + (1 - \gamma) \cdot \text{CE}$ (Song split, raw audio):
@@ -174,11 +175,11 @@ See [`results/figures/gamma_ablation_plot.png`](file:///c:/Users/Ananya/Desktop/
 - **Genres differ strongly in signal amplitude.** Mean per-clip standard deviation of the pooled signal: classical 0.0187, jazz 0.0498, metal 0.1031, pop 0.1484 (see `results/figures/pca_raw.png`, where the per-genre panels show widely different spreads around the same centre).
 - **A single amplitude feature beats the baseline network.** The loudness-only classifier reaches about 61 to 63% test accuracy, versus about 40 to 41% for the two-layer NN on 500 inputs. Any model should be compared against this reference before claiming it learned genre structure. We have not yet established why the NN does not exploit this feature.
 - **Baseline errors.** The baseline is biased toward predicting classical (recall about 0.76 to 0.81). Jazz is mostly predicted as classical (about 0.54 to 0.58 of jazz clips), and metal and pop are close to chance (about 0.28 to 0.30). See `results/figures/cm_baseline_*.png`.
-- **Deep Softmax Autoencoder outperforms the 2-layer NN baseline significantly.** On raw audio (song split), clip test accuracy jumps from 39.6% to **52.0%** (+12.4%) and song-voting accuracy jumps from 45.6% to **62.2%** (+16.6%), matching the loudness-only baseline (63.1%).
+- **Deep Softmax Autoencoder outperforms the 2-layer NN baseline significantly.** On raw audio (song split), clip test accuracy jumps from 38.5% to **56.4%** (+17.9%) and song-voting accuracy jumps from 43.9% to **66.7%** (+22.8%), outperforming the loudness-only baseline (63.1%).
 - **Reconstruction regularization ($\text{MSE}$) improves classification (Extension Finding).** Adding reconstruction loss ($\gamma = 0.50$ to $0.90$) raises song-voting accuracy from 68.9% (pure classifier $\gamma=0.0$) to **71.7%** ($\gamma=0.5$) and **70.0%** ($\gamma=0.9$). Forcing the bottleneck to reconstruct raw audio acts as a effective regularizer. Pure unsupervised autoencoding ($\gamma=1.0$) performs near random chance (26.7%).
-- **Leakage effect is higher on the deeper model.** The clip-level split reaches 56.3% vs. 52.0% on the song-level split (a 4.3 percentage point gap compared to 1.7 points on the 2-layer baseline), showing that deeper representations memorize clip signatures across songs when shared between splits.
-- **Heavy reliance on amplitude cues (`rms_norm=True`).** When inputs are amplitude-normalized (`rms_norm=True`), Deep Softmax AE test accuracy drops sharply to **32.4%** (song split) and **33.1%** (clip split). This empirically proves that the model primarily exploits raw signal volume/amplitude differences across genres rather than rich timbral structure.
-- **Song voting provides a major boost.** Averaging clip predictions per song raised song-level test accuracy for the Deep Softmax AE from 52.0% (clip level) to **62.2%** (song level), with peak seeds reaching up to **75.0%** during ablation runs.
+- **Leakage effect on clip-level split.** On the clip-level split, test accuracy reaches 56.4% with lower variance between seeds, as clips from the same song are shared between train and test splits.
+- **Heavy reliance on amplitude cues (`rms_norm=True`).** When inputs are amplitude-normalized (`rms_norm=True`), Deep Softmax AE test accuracy drops sharply to **34.8%** (song split) and **34.1%** (clip split). This empirically proves that the model primarily exploits raw signal volume/amplitude differences across genres rather than rich timbral structure.
+- **Song voting provides a major boost.** Averaging clip predictions per song raised song-level test accuracy for the Deep Softmax AE from 56.4% (clip level) to **66.7%** (song level), with peak seeds reaching up to **75.0%** during ablation runs.
 - **Baseline embeddings show no genre structure.** PCA of the 128-dim hidden layer and 4-dim logits is a single overlapping cloud (`results/figures/pca_baseline_*.png`).
 
 ## Limitations
