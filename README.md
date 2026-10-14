@@ -137,9 +137,9 @@ Mean ± std over 3 seeds.
 
 | Model | Split | Train | Dev | Test | Test (song vote) |
 |---|---|---|---|---|---|
-| Two-layer NN | Song-level | 0.550 ± 0.023 | 0.417 ± 0.006 | 0.385 ± 0.009 | 0.439 ± 0.035 |
-| Two-layer NN | Clip-level | 0.573 ± 0.017 | 0.421 ± 0.002 | 0.409 ± 0.002 | n/a |
-| Loudness-only (logistic regression) | Song-level | 0.594 | 0.648 | 0.631 | n/a |
+| Two-layer NN | Song-level | 0.559 ± 0.023 | 0.413 ± 0.001 | 0.395 ± 0.006 | 0.450 ± 0.000 |
+| Two-layer NN | Clip-level | 0.643 ± 0.097 | 0.428 ± 0.010 | 0.416 ± 0.012 | n/a |
+| Loudness-only (logistic regression) | Song-level | 0.594 | 0.648 | 0.631 | 0.733 |
 | Loudness-only | Clip-level | 0.608 | 0.602 | 0.612 | n/a |
 | **Deep Softmax Autoencoder** | **Song-level** | **0.901 ± 0.024** | **0.576 ± 0.035** | **0.564 ± 0.028** | **0.667 ± 0.017** |
 | **Deep Softmax Autoencoder** | **Clip-level** | **0.926 ± 0.004** | **0.563 ± 0.034** | **0.564 ± 0.015** | n/a |
@@ -160,26 +160,26 @@ We evaluated the effect of varying the reconstruction loss weight $\gamma \in [0
 
 | $\gamma$ (Reconstruction Weight) | Loss Focus | Test Clip Acc (mean ± std) | **Test Song Vote Acc (mean ± std)** |
 |---|---|---|---|
-| **0.00** | Pure Classification | 0.527 ± 0.023 | 0.689 ± 0.042 |
-| **0.25** | High Classification | 0.551 ± 0.022 | 0.706 ± 0.010 |
-| **0.50** | Balanced Joint Loss | 0.556 ± 0.014 | **0.717 ± 0.029** |
-| **0.75** | High Reconstruction | 0.549 ± 0.026 | 0.678 ± 0.038 |
-| **0.90** | Paper Default | **0.566 ± 0.023** | **0.700 ± 0.073** |
-| **0.95** | Low Classification | 0.523 ± 0.109 | 0.622 ± 0.178 |
-| **1.00** | Pure Autoencoding | 0.276 ± 0.023 | 0.267 ± 0.029 |
+| **0.00** | Pure Classification | 0.518 ± 0.017 | 0.650 ± 0.044 |
+| **0.25** | High Classification | 0.518 ± 0.006 | 0.667 ± 0.000 |
+| **0.50** | Balanced Joint Loss | 0.543 ± 0.020 | **0.689 ± 0.035** |
+| **0.75** | High Reconstruction | 0.551 ± 0.047 | 0.650 ± 0.088 |
+| **0.90** | Paper Default | **0.564 ± 0.028** | **0.667 ± 0.017** |
+| **0.95** | Low Classification | 0.566 ± 0.033 | 0.683 ± 0.058 |
+| **1.00** | Pure Autoencoding | 0.263 ± 0.022 | 0.250 ± 0.000 |
 
 See [`results/figures/gamma_ablation_plot.png`](file:///c:/Users/Ananya/Desktop/Eng/Sem5/ML/ML_Mini_Project/results/figures/gamma_ablation_plot.png) for the sensitivity curve.
 
 ## Findings so far
 
 - **Genres differ strongly in signal amplitude.** Mean per-clip standard deviation of the pooled signal: classical 0.0187, jazz 0.0498, metal 0.1031, pop 0.1484 (see `results/figures/pca_raw.png`, where the per-genre panels show widely different spreads around the same centre).
-- **A single amplitude feature beats the baseline network.** The loudness-only classifier reaches about 61 to 63% test accuracy, versus about 40 to 41% for the two-layer NN on 500 inputs. Any model should be compared against this reference before claiming it learned genre structure. We have not yet established why the NN does not exploit this feature.
-- **Baseline errors.** The baseline is biased toward predicting classical (recall about 0.76 to 0.81). Jazz is mostly predicted as classical (about 0.54 to 0.58 of jazz clips), and metal and pop are close to chance (about 0.28 to 0.30). See `results/figures/cm_baseline_*.png`.
-- **Deep Softmax Autoencoder outperforms the 2-layer NN baseline significantly.** On raw audio (song split), clip test accuracy jumps from 38.5% to **56.4%** (+17.9%) and song-voting accuracy jumps from 43.9% to **66.7%** (+22.8%), outperforming the loudness-only baseline (63.1%).
-- **Reconstruction regularization ($\text{MSE}$) improves classification (Extension Finding).** Adding reconstruction loss ($\gamma = 0.50$ to $0.90$) raises song-voting accuracy from 68.9% (pure classifier $\gamma=0.0$) to **71.7%** ($\gamma=0.5$) and **70.0%** ($\gamma=0.9$). Forcing the bottleneck to reconstruct raw audio acts as a effective regularizer. Pure unsupervised autoencoding ($\gamma=1.0$) performs near random chance (26.7%).
+- **A single amplitude feature beats the baseline network.** The loudness-only classifier reaches about 61 to 63% test accuracy, versus about 40 to 42% for the two-layer NN on 500 inputs. Any model should be compared against this reference before claiming it learned genre structure. We have not yet established why the NN does not exploit this feature.
+- **Baseline errors.** The baseline is biased toward predicting classical (recall about 0.76 to 0.83). Jazz is mostly predicted as classical (about 0.54 to 0.58 of jazz clips), and metal and pop are close to chance (about 0.28 to 0.30). See `results/figures/cm_baseline_*.png`.
+- **Deep Softmax Autoencoder outperforms the 2-layer NN baseline significantly.** On raw audio (song split), clip test accuracy jumps from 39.5% to **56.4%** (+16.9%) and song-voting accuracy jumps from 45.0% to **66.7%** (+21.7%).
+- **Reconstruction regularization ($\text{MSE}$) improves classification (Extension Finding).** Adding reconstruction loss ($\gamma = 0.50$ to $0.95$) raises song-voting accuracy from 65.0% (pure classifier $\gamma=0.0$) to **68.9%** ($\gamma=0.50$) and **68.3%** ($\gamma=0.95$). Forcing the bottleneck to reconstruct raw audio acts as an effective regularizer. Pure unsupervised autoencoding ($\gamma=1.0$) performs at random chance (25.0%).
 - **Leakage effect on clip-level split.** On the clip-level split, test accuracy reaches 56.4% with lower variance between seeds, as clips from the same song are shared between train and test splits.
 - **Heavy reliance on amplitude cues (`rms_norm=True`).** When inputs are amplitude-normalized (`rms_norm=True`), Deep Softmax AE test accuracy drops sharply to **34.8%** (song split) and **34.1%** (clip split). This empirically proves that the model primarily exploits raw signal volume/amplitude differences across genres rather than rich timbral structure.
-- **Song voting provides a major boost.** Averaging clip predictions per song raised song-level test accuracy for the Deep Softmax AE from 56.4% (clip level) to **66.7%** (song level), with peak seeds reaching up to **75.0%** during ablation runs.
+- **Song voting provides a major boost.** Averaging clip predictions per song raised song-level test accuracy for the Deep Softmax AE from 56.4% (clip level) to **66.7%** (song level), with peak seeds reaching up to **71.7%** during ablation runs.
 - **Baseline embeddings show no genre structure.** PCA of the 128-dim hidden layer and 4-dim logits is a single overlapping cloud (`results/figures/pca_baseline_*.png`).
 
 ## Limitations
