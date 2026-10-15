@@ -1,6 +1,6 @@
 # Latent Feature Extraction for Musical Genres from Raw Audio
 
-UE24CS352A Machine Learning mini-project. We reimplement and critically evaluate the *Deep Softmax Autoencoder* from "Latent Feature Extraction for Musical Genres from Raw Audio" (Sawhney, Vasavada, Wang, 2018), which learns genre embeddings directly from raw audio without hand-engineered features.
+We reimplement and critically evaluate the *Deep Softmax Autoencoder* from "Latent Feature Extraction for Musical Genres from Raw Audio" (Sawhney, Vasavada, Wang, 2018), which learns genre embeddings directly from raw audio without hand-engineered features.
 
 Our main changes to the original setup:
 - **Song-level train/dev/test split.** The paper split randomly at clip level, so clips from the same song can appear in both train and test. We split by song and also keep the clip-level split so the two can be compared.
@@ -11,10 +11,10 @@ Our main changes to the original setup:
 
 ## Team and contributions
 
-| Member | Responsibility |
-|---|---|
-| Abhay Natesh Bharadwaj | Data pipeline, song-level split, two-layer NN baseline, evaluation module, loudness analysis |
-| Ananya S | Autoencoder, Deep Softmax Autoencoder, extension experiments |
+| SRN | Member | Responsibility |
+|---|---|---|
+| PES1UG24AM007 | Abhay Natesh Bharadwaj | Data pipeline, song-level split, two-layer NN baseline, evaluation module, loudness analysis |
+| PES1UG24AM038 | Ananya S | Autoencoder, Deep Softmax Autoencoder, extension experiments |
 | Both | Write-up, slides, demo |
 
 ## Repository structure
