@@ -39,8 +39,7 @@ $$\mathcal{L} = \gamma \cdot \text{MSE}(\text{reconstruction}, x) + (1 - \gamma)
 |---|---|---|
 | PES1UG24AM007 | **Abhay Natesh Bharadwaj** | Data loading & preprocessing pipeline, song-level split design, two-layer NN baseline, evaluation module, loudness reference classifier. |
 | PES1UG24AM038 | **Ananya S** | Autoencoder backbone, Deep Softmax Autoencoder joint training, loss weight ($\gamma$) sensitivity analysis, determinism & seed stabilization. |
-| - | **Both** | Experimental analysis, technical reports, presentation slides, and 
-documentation. |
+| - | **Both** | Experimental analysis, technical reports, presentation slides, and documentation. |
 
 ---
 
