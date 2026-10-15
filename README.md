@@ -161,7 +161,7 @@ python src/check_data.py && python src/loudness_only.py && python src/run_baseli
 python src/check_data.py
 ```
 * **Output:** Validates 0 song overlap in song split, displays per-genre volume standard deviations, and saves [`results/figures/pca_raw.png`](results/figures/pca_raw.png).
-* **Runtime:** ~5 seconds.
+* **Runtime:** ~30 seconds.
 
 #### Step 2: Run Loudness-Only Reference Classifier
 ```bash
@@ -169,7 +169,7 @@ python src/loudness_only.py
 ```
 * **Output:** Evaluates logistic regression on $f = \log(\sigma_{\text{clip}})$.
 * **Result:** Achieves **63.1% clip accuracy** and **73.3% song-vote accuracy** on volume alone.
-* **Runtime:** ~2 seconds.
+* **Runtime:** ~30 seconds.
 
 #### Step 3: Train Two-Layer Neural Network Baseline
 ```bash
@@ -185,7 +185,7 @@ python src/run_autoencoder.py
 ```
 * **Output:** Trains DSAE (Backbone 500 $\to$ 64 $\to$ 500, Classifier 64 $\to$ 4, $\gamma = 0.90$) across all settings.
 * **Artifacts:** Saves [`results/metrics/deep_softmax.csv`](results/metrics/deep_softmax.csv), figures, and model checkpoints.
-* **Runtime:** ~5-6 minutes.
+* **Runtime:** ~8-10 minutes.
 
 #### Step 5: Run Loss Weight ($\gamma$) Sensitivity Analysis (Extension)
 ```bash
@@ -193,7 +193,7 @@ python src/extension_gamma.py
 ```
 * **Output:** Sweeps $\gamma \in [0.0, 0.25, 0.50, 0.75, 0.90, 0.95, 1.00]$ on song split across 3 seeds.
 * **Artifacts:** Saves [`results/metrics/gamma_ablation.csv`](results/metrics/gamma_ablation.csv) and [`results/figures/gamma_ablation_plot.png`](results/figures/gamma_ablation_plot.png).
-* **Runtime:** ~3-4 minutes.
+* **Runtime:** ~5-6 minutes.
 
 ---
 
